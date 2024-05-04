@@ -104,3 +104,14 @@ def parse_yalp(archivo):
     tokens_declarados = verify_tokens(seccion_tokens)
     producciones_declaradas = verify_productions(seccion_producciones, tokens_declarados)
     return tokens_declarados, producciones_declaradas
+
+def verify_yalex_tokens(yalex_parser_code, tokens_declarados):
+    yalex_tokens = set()
+    for tuple in yalex_parser_code:
+        yalex_tokens.add(tuple[1])
+    
+    for token in tokens_declarados:
+        if token not in yalex_tokens:
+            raise ValueError(f"Token '{token}' no declarado en la configuración Yalex.")
+    
+    print("Análisis de tokens de Yalex completado con éxito.")
