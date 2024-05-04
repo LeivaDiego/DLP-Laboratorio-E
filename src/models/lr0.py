@@ -189,5 +189,5 @@ class SLRParser:
                     automaton.edge(f'I{r}', 'acc', label='$')
 
         # Renderizar y guardar el autómata en un directorio específico
-        automaton.render(filename=f'automaton{name}', cleanup=True, format='png', view=True)
+        automaton.render(filename=f'LR0_{name}', directory="./src/lr0_out/",cleanup=True, format='png', view=True)
         print('Automata LR(0) generado exitosamente, guardado en /lr0_out')

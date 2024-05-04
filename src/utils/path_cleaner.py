@@ -22,4 +22,5 @@ def extract_file_name(path):
     Returns:
         str: The name of the file.
     """
-    return os.path.basename(path)
+    file_name = os.path.basename(path)
+    return os.path.splitext(file_name)[0]  # Remove extension
