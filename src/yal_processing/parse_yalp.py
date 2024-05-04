@@ -98,11 +98,11 @@ def verify_productions(seccion_producciones, tokens_declarados):
     return producciones_dict
 
 
-
 def parse_yalp(archivo):
     seccion_tokens, seccion_producciones = read_yapar(archivo)
     tokens_declarados = verify_tokens(seccion_tokens)
     producciones_declaradas = verify_productions(seccion_producciones, tokens_declarados)
+    producciones_declaradas = {k: ' '.join(v.split()) for k, v in producciones_declaradas.items()}
     return tokens_declarados, producciones_declaradas
 
 def verify_yalex_tokens(yalex_parser_code, tokens_declarados):
