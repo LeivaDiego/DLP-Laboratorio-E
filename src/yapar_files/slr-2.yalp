@@ -12,6 +12,8 @@
 %token NUMBER
 %token LPAREN RPAREN
 
+%%
+
 expression:
     expression PLUS term
   | expression MINUS term

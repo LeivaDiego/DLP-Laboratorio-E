@@ -8,12 +8,14 @@
 %token TIMES
 %token LPAREN RPAREN
 
+%%
+
 expression:
     term PLUS expression
   | term
 ;
 term:
-    number TIMES term
-  | number
+    NUMBER TIMES term
+  | NUMBER
   | LPAREN expression RPAREN
 ;

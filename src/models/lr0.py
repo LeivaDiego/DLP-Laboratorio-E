@@ -20,23 +20,23 @@ def first_follow(G):
         for head, bodies in G.grammar.items():
             for body in bodies:
                 for symbol in body:
-                    if symbol != '^':
-                        updated |= union(first[head], first[symbol] - set('^'))
+                    if symbol != 'ε':
+                        updated |= union(first[head], first[symbol] - set('ε'))
 
-                        if '^' not in first[symbol]:
+                        if 'ε' not in first[symbol]:
                             break
                     else:
-                        updated |= union(first[head], set('^'))
+                        updated |= union(first[head], set('ε'))
                 else:
-                    updated |= union(first[head], set('^'))
+                    updated |= union(first[head], set('ε'))
 
                 aux = follow[head]
                 for symbol in reversed(body):
-                    if symbol == '^':
+                    if symbol == 'ε':
                         continue
                     if symbol in follow:
-                        updated |= union(follow[symbol], aux - set('^'))
-                    if '^' in first[symbol]:
+                        updated |= union(follow[symbol], aux - set('ε'))
+                    if 'ε' in first[symbol]:
                         aux = aux | first[symbol]
                     else:
                         aux = first[symbol]
@@ -76,7 +76,7 @@ class SLRParser:
                         if symbol_after_dot in self.G_prime.nonterminals:
                             for G_body in self.G_prime.grammar[symbol_after_dot]:
                                 J.setdefault(symbol_after_dot, set()).add(
-                                    ('.',) if G_body == ('^',) else ('.',) + G_body)
+                                    ('.',) if G_body == ('ε',) else ('.',) + G_body)
 
             if item_len == len(J):
                 return J
@@ -134,7 +134,7 @@ class SLRParser:
 
                     elif body[-1] == '.' and head != self.G_prime.start:  # CASE 2 b
                         for j, (G_head, G_body) in enumerate(self.G_indexed):
-                            if G_head == head and (G_body == body[:-1] or G_body == ('^',) and body == ('.',)):
+                            if G_head == head and (G_body == body[:-1] or G_body == ('ε',) and body == ('.',)):
                                 for f in self.follow[head]:
                                     if parse_table[i][f]:
                                         parse_table[i][f] += '/'
@@ -161,17 +161,17 @@ class SLRParser:
 
         # Construcción del contenido del autómata, similar a lo anterior
         for i, I in enumerate(self.C):
-            I_html = f'<<I>I</I><SUB>{i}</SUB><BR/>'
+            I_html = f'<<I>I</I><SUB> {i} </SUB><BR/>'
             for head, bodies in I.items():
                 for body in bodies:
-                    I_html += f'<I>{head}</I> &#8594; '
+                    I_html += f'<I> {head} </I> &#8594; '
                     for symbol in body:
                         if symbol in self.G_prime.nonterminals:
-                            I_html += f'<I>{symbol}</I>'
+                            I_html += f'<I> {symbol} </I>'
                         elif symbol in self.G_prime.terminals:
-                            I_html += f'<B>{symbol}</B>'
+                            I_html += f'<B> {symbol} </B>'
                         else:
-                            I_html += f'{symbol}'
+                            I_html += f' {symbol} '
                     I_html += '<BR ALIGN="LEFT"/>'
             automaton.node(f'I{i}', f'{I_html}>')
 
@@ -185,7 +185,7 @@ class SLRParser:
                         i = i[:i.index('/')]
                     automaton.edge(f'I{r}', f'I{i}', label=f'<<B>{c}</B>>' if c in self.G_prime.terminals else c)
                 elif self.parse_table[r][c] == 'acc':
-                    automaton.node('acc', '<<B>accept</B>>', shape='none')
+                    automaton.node('acc', '<<B>ACCEPT</B>>', shape='none')
                     automaton.edge(f'I{r}', 'acc', label='$')
 
         # Renderizar y guardar el autómata en un directorio específico

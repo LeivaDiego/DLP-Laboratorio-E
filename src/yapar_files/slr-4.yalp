@@ -40,6 +40,8 @@
 %token PLUS
 %token TIMES
 
+%%
+
 p:
     t
 ;
@@ -64,6 +66,7 @@ e:
 z:
     LT x
   | EQ x
+;
 x:
     r w
   | r
